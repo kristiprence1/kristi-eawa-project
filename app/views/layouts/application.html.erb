@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>LibraryManagementSystem</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+</head>
+
+<body>
+<% unless controller_name == "sessions" and action_name == "new" or controller_name == "registrations" and action_name == "new" %>
+  <%= render "shared/navbar" %>
+  <%= render "shared/toaster" %>
+<% end %>
+<%= yield %>
+</body>
+</html>

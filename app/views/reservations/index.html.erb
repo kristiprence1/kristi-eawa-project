@@ -1,0 +1,51 @@
+<% if @reservations.size == 0 %>
+  <div class="container">
+    <h2 class="text-muted mt-5">Reservations</h2>
+    <div class="text-center mt-5">
+      No reservations found!
+    </div>
+  </div>
+<% else %>
+  <div class="container">
+    <h2 class="text-muted mt-5">Reservations</h2>
+    <div class="table-responsive mt-4">
+      <table class="table table-striped table-hover">
+        <thead>
+        <th>Book Name</th>
+        <th>Journal Name</th>
+        <th>status</th>
+        <th>Reservation Date</th>
+        <th colspan="2">Actions</th>
+        </thead>
+        <tbody>
+        <% @reservations&.each do |reservation| %>
+          <tr>
+            <td><%= reservation&.book&.title %></td>
+            <td><%= reservation&.journal&.title %></td>
+            <td><%= reservation.status %></td>
+            <td><%= reservation.reservation_date %></td>
+            <td>
+              <% if reservation.status == "pending" %>
+                <form action="/reservations/<%= reservation.id %>" method="put">
+                  <input type="hidden" name="_method" value="patch">
+                  <input name="reservation[status]" type="hidden" value="approved">
+                  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+                  <input type="submit" value="Approve" class="btn btn-primary">
+                </form>
+              <% end %>
+              <% if reservation.status == "pending" %>
+                <form action="/reservations/<%= reservation.id %>" method="put">
+                  <input type="hidden" name="_method" value="patch">
+                  <input name="reservation[status]" type="hidden" value="rejected">
+                  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+                  <input type="submit" value="rejected" class="btn btn-danger">
+                </form>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+<% end %>

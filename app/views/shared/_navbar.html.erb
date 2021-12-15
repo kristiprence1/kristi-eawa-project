@@ -1,0 +1,59 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">Library Management System</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <% if current_user.present? %>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/">Home</a>
+          </li>
+          <% if admin? %>
+            <li class="nav-item">
+              <a class="nav-link" href="/books">Books</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/journals">Journals</a>
+            </li>
+          <% end %>
+          <li class="nav-item">
+            <a class="nav-link" href="/users/edit">Profile</a>
+          </li>
+          <% unless admin? %>
+            <li class="nav-item">
+              <a class="nav-link" href="/users/reservations">My Reservations</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/users/loans">My Loans</a>
+            </li>
+          <% end %>
+          <% if admin? %>
+            <li class="nav-item">
+              <a class="nav-link" href="/users">User List</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/reservations">Reservations</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/loans">Loans</a>
+            </li>
+          <% end %>
+        <% end %>
+      </ul>
+      <div class="pl-2 d-flex d-inline-block">
+
+        <div class="mt-2">
+          <%= current_user.present? ? current_user.name : "Not logged in" %>
+        </div>
+
+        <% if current_user.present? %>
+          <%= link_to "Logout", destroy_user_session_path, method: :delete, class: 'btn btn-link' %>
+        <% else %>
+          <%= link_to "Log in", new_user_session_path, class: 'btn btn-link' %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</nav>

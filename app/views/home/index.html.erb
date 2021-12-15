@@ -1,0 +1,70 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <h3 class="mt-4 text-muted" style="margin-left: 1rem;">Search</h3>
+    </div>
+    <div class="col-md-9">
+      <div class="d-flex mt-4">
+        <form method="get" action="/">
+          <div class="row">
+            <div class="col-md-4">
+              <input type="text" name="search" class="form-control" placeholder="Enter Title">
+            </div>
+            <div class="col-md-4">
+              <select name="resource_type" class="form-select">
+                <option>All</option>
+                <option value="book">Book</option>
+                <option value="journal">Journal</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <input type="submit" value="Search" class="btn btn-primary">
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="mt-3 d-flex flex-wrap">
+    <% @all_books.each do |all_item| %>
+      <div class="card mt-2" style="width: 25em; margin-left: 1rem;">
+        <div class="card-header">
+          <%= all_item.title %> -
+          <% if all_item.volume.present? %>
+            <%= 'Journal' %>
+          <% else %>
+            <%= 'Book' %>
+          <% end %>
+        </div>
+        <div class="card-body">
+          <%= all_item.description %>
+        </div>
+        <% if all_item.status == "available" %>
+          <div class="card-footer">
+            <form method="POST" action="/reservations">
+              <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+              <input type="hidden" name="reservation[user_id]" value="<%= current_user&.id %>">
+              <% if all_item.volume.present? %>
+                <input type="hidden" name="reservation[journal_id]" value="<%= all_item.id %>">
+                <input type="hidden" name="reservation[book_id]" value="">
+              <% else %>
+                <input type="hidden" name="reservation[journal_id]" value="">
+                <input type="hidden" name="reservation[book_id]" value="<%= all_item.id %>">
+              <% end %>
+              <input type="hidden" name="reservation[status]" value="pending">
+              <input type="hidden" name="reservation[reservation_date]" value="<%= Date.current %>">
+              <input type="submit" value="Book Now" class="btn btn-primary">
+            </form>
+          </div>
+        <% else %>
+          <div class="card-footer d-flex flex-wrap">
+            <strong>Available at</strong>
+            <div style="margin-left: 10px;">
+              <%= (all_item.booked_at + 2.weeks).in_time_zone("Europe/Tirane")&.to_date %> <%= (all_item.booked_at + 2.weeks).in_time_zone("Europe/Tirane")&.strftime("%I:%M %p") %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

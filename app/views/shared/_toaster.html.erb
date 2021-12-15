@@ -1,0 +1,25 @@
+<% if notice.present? %>
+  <div class="alert alert-success alert-dismissible bg-success text-white border-0 fade show alert-float" role="alert">
+    <button style="float: right; background: none; border: none;" data-dismiss="alert" class="close" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <strong>Success - </strong> <%= notice %>
+  </div>
+<% end %>
+<% if alert.present? %>
+  <div class="alert alert-danger alert-dismissible bg-danger text-white border-0 fade show alert-float" role="alert">
+    <button style="float: right; background: none; border: none;" data-dismiss="alert"  class="close" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <strong>Error - </strong> <%= alert %>
+  </div>
+<% end %>
+
+<script>
+    $(function() {
+        $('.alert-float').slideDown().delay(5000).slideUp();
+    });
+    $('.alert .close').click(function(){
+        $('.alert').slideUp();
+    });
+</script>

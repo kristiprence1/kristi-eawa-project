@@ -1,0 +1,43 @@
+<div class="container">
+  <h2 class="mt-5 text-muted">
+    New Loan
+  </h2>
+
+  <div class="mt-3">
+
+    <%= form_with(model: @loan, local: true) do |form| %>
+      <div class="form-group">
+        <strong>Reservation</strong>
+        <div>
+          <%= form.select :reservation_id, options_for_select(Reservation.where(status: ["approved"]).collect { |p| [p.book.nil? ? p.journal.title : p.book.title, p.id] }, @loan.reservation_id), {include_blank: 'Select Reservation'}, class: "form-select" %>
+        </div>
+      </div>
+
+      <div class="form-group mt-3">
+        <strong>Amount</strong>
+        <div>
+          <%= form.text_field :amount, class: 'form-control' %>
+        </div>
+      </div>
+
+      <div class="form-group mt-3">
+        <strong>Status</strong>
+        <div>
+          <%= form.select :status, options_for_select(['past', 'outstanding', 'overdue', 'closed', "collected"], @loan.status), {}, class: 'form-select' %>
+        </div>
+      </div>
+
+      <div class="form-group mt-3">
+        <strong>Fine Amount</strong>
+        <div>
+          <%= form.text_field :fine_amount, class: 'form-control' %>
+        </div>
+      </div>
+
+      <div class="mt-3">
+        <%= form.submit "Save", class: "btn btn-primary" %>
+      </div>
+    <% end %>
+
+  </div>
+</div>
